@@ -18,6 +18,7 @@ class ExpensePlannerMainView extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text("Expenses Planner"),
+          centerTitle: true,
         ),
         body: ListView(
           padding: const EdgeInsets.all(4.0),

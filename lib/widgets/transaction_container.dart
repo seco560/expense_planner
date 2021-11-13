@@ -57,6 +57,10 @@ class _TransactionsContainerState extends State<TransactionsContainer> {
     setState(() {
       _userTransactions.add(newTransaction);
     });
+
+    titleController.clear();
+    priceController.clear();
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   @override
