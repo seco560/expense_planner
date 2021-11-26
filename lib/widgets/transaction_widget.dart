@@ -23,7 +23,7 @@ class TransactionWidget extends StatelessWidget {
               backgroundColor: Colors.green.shade700,
               foregroundColor: Colors.white,
               child: Text(
-                '${transaction.price.toString()}\nRON',
+                '${transaction.price.toStringAsFixed(2)}\nRON',
                 style:
                     const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,

@@ -20,7 +20,7 @@ class AddTransactionWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             TextField(
               controller: titleController,
@@ -34,16 +34,20 @@ class AddTransactionWidget extends StatelessWidget {
               decoration: const InputDecoration(
                 labelText: 'Price',
               ),
+              keyboardType: TextInputType.number,
               onChanged: (String value) {},
             ),
-            ElevatedButton(
-              onPressed: addTransactionCallback,
-              style: ElevatedButton.styleFrom(primary: Colors.green[700]),
-              child: const Text(
-                'Add Transaction',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+            Padding(
+              padding: const EdgeInsets.only(top: 50.0),
+              child: ElevatedButton(
+                onPressed: addTransactionCallback,
+                style: ElevatedButton.styleFrom(primary: Colors.green[700]),
+                child: const Text(
+                  'Add Transaction',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             )
