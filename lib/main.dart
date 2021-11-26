@@ -8,8 +8,6 @@ void main() {
   runApp(const ExpensePlannerMainView());
 }
 
-// TODO Move all the state related stuff from transaction container to here
-// (no way around it in order to have the modal bottom sheet working properly)
 class ExpensePlannerMainView extends StatefulWidget {
   const ExpensePlannerMainView({Key? key}) : super(key: key);
 
@@ -54,6 +52,7 @@ class _ExpensePlannerMainViewState extends State<ExpensePlannerMainView> {
     double price = double.parse(priceController.text);
     DateTime timestamp = DateTime.now();
 
+    // create and add transaction to list
     final ExpenseTransaction newTransaction = ExpenseTransaction(
       id: id,
       title: title,
@@ -65,21 +64,43 @@ class _ExpensePlannerMainViewState extends State<ExpensePlannerMainView> {
       _userTransactions.add(newTransaction);
     });
 
+    // clear text and exit modal bottom sheet
     titleController.clear();
     priceController.clear();
-    FocusScope.of(ctx).requestFocus(FocusNode());
+    Navigator.pop(ctx);
   }
 
   void startAddNewTransaction(BuildContext ctx) {
-    showModalBottomSheet(
-      context: ctx,
-      builder: (ctx) => Container(
-        padding: const EdgeInsets.all(8.0),
-        child: AddTransactionWidget(
-          titleController: titleController,
-          priceController: priceController,
-          addTransactionCallback: () => addNewExpense(ctx),
+    showModalBottomSheet<dynamic>(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
         ),
+      ),
+      isScrollControlled: true,
+      context: ctx,
+      builder: (ctx) => Wrap(
+        children: <Widget>[
+          Padding(
+            padding: MediaQuery.of(ctx).viewInsets,
+            child: Container(
+              decoration: const ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0),
+                  ),
+                ),
+              ),
+              child: AddTransactionWidget(
+                titleController: titleController,
+                priceController: priceController,
+                addTransactionCallback: () => addNewExpense(ctx),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -87,12 +108,13 @@ class _ExpensePlannerMainViewState extends State<ExpensePlannerMainView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "Expenses Tracker",
       debugShowCheckedModeBanner: false,
       color: Colors.purple,
       theme: ThemeData(primarySwatch: Colors.purple),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("Expenses Planner"),
+          title: const Text("Expenses Tracker"),
           centerTitle: true,
         ),
         floatingActionButton: Builder(
@@ -102,24 +124,26 @@ class _ExpensePlannerMainViewState extends State<ExpensePlannerMainView> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        body: ListView(
-          padding: const EdgeInsets.all(4.0),
+        body: Column(
           children: <Widget>[
-            const Card(
-              color: Colors.purple,
-              margin: EdgeInsets.all(22.0),
-              child: Text(
-                "Chart - Placeholder",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+            const Expanded(
+              flex: 1,
+              child: Card(
+                color: Colors.purple,
+                margin: EdgeInsets.all(22.0),
+                child: Text(
+                  "Chart - Placeholder",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
+                elevation: 5,
               ),
-              elevation: 5,
             ),
-            TransactionList(_userTransactions),
+            Expanded(flex: 8, child: TransactionList(_userTransactions)),
           ],
         ),
       ),

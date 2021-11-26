@@ -13,9 +13,11 @@ class TransactionList extends StatefulWidget {
 class _TransactionListState extends State<TransactionList> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children:
-          widget._userTransactions.map((e) => TransactionWidget(e)).toList(),
+    return ListView.builder(
+      itemCount: widget._userTransactions.length,
+      itemBuilder: (BuildContext ctx, int index) {
+        return TransactionWidget(widget._userTransactions[index]);
+      },
     );
   }
 }
