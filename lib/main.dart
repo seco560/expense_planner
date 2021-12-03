@@ -1,6 +1,9 @@
 import 'package:expense_planner/widgets/add_transaction_widget.dart';
+import 'package:expense_planner/widgets/transaction_chart.dart';
 import 'package:expense_planner/widgets/transaction_list_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'models/expense_transaction.dart';
 
@@ -17,25 +20,38 @@ class ExpensePlannerMainView extends StatefulWidget {
 
 class _ExpensePlannerMainViewState extends State<ExpensePlannerMainView> {
   final List<ExpenseTransaction> _userTransactions = [
-    ExpenseTransaction(
-      id: 't1',
-      title: 'Eee PC',
-      price: 300,
-      timestamp: DateTime(2010, 07, 10),
-    ),
-    ExpenseTransaction(
-      id: 't2',
-      title: 'Pocophone',
-      price: 1200,
-      timestamp: DateTime(2018, 11, 11),
-    ),
-    ExpenseTransaction(
-      id: 't3',
-      title: 'PSVita',
-      price: 350.70,
-      timestamp: DateTime(2020, 11, 11),
-    ),
+    // ExpenseTransaction(
+    //   id: 't0',
+    //   title: 'Eee PC',
+    //   price: 300,
+    //   timestamp: DateTime(2010, 07, 10),
+    // ),
+    // ExpenseTransaction(
+    //   id: 't1',
+    //   title: 'Pocophone',
+    //   price: 1200,
+    //   timestamp: DateTime(2018, 11, 11),
+    // ),
+    // ExpenseTransaction(
+    //   id: 't2',
+    //   title: 'PSVita',
+    //   price: 350.70,
+    //   timestamp: DateTime(2020, 11, 11),
+    // ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting();
+  }
+
+  List<ExpenseTransaction> get _recentTransactions {
+    return _userTransactions
+        .where((transaction) => transaction.timestamp
+            .isAfter(DateTime.now().subtract(const Duration(days: 7))))
+        .toList();
+  }
 
   // text controllers, they get passed down to the add transaction widget
   // we need them here to more easily retrieve the text value (see below)
@@ -46,8 +62,10 @@ class _ExpensePlannerMainViewState extends State<ExpensePlannerMainView> {
   /// Creates a new object and modifies state to reflect its addition
   void addNewExpense(BuildContext ctx) {
     // create and increment id
-    String id = 't' +
-        (int.parse(_userTransactions.last.id.substring(1)) + 1).toString();
+    String id = _userTransactions.isEmpty
+        ? 't0'
+        : 't' +
+            (int.parse(_userTransactions.last.id.substring(1)) + 1).toString();
     String title = titleController.text;
     double price = double.parse(priceController.text);
     DateTime timestamp = DateTime.now();
@@ -126,24 +144,10 @@ class _ExpensePlannerMainViewState extends State<ExpensePlannerMainView> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: Column(
           children: <Widget>[
-            const Expanded(
-              flex: 1,
-              child: Card(
-                color: Colors.purple,
-                margin: EdgeInsets.all(22.0),
-                child: Text(
-                  "Chart - Placeholder",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                elevation: 5,
-              ),
-            ),
-            Expanded(flex: 8, child: TransactionList(_userTransactions)),
+            TransactionChart(recentTransactions: _recentTransactions),
+            _userTransactions.isEmpty
+                ? const Text('No transactions added yet.')
+                : Expanded(flex: 8, child: TransactionList(_userTransactions)),
           ],
         ),
       ),
