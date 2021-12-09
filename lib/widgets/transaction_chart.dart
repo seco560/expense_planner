@@ -42,15 +42,17 @@ class TransactionChart extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: groupedTransactionValues
-            .map((data) => Flexible(
-                  fit: FlexFit.tight,
-                  child: ChartBar(
-                      data['day'] as String,
-                      data['totalSum'] as double,
-                      totalSpending == 0
-                          ? 0
-                          : (data['totalSum'] as double) / totalSpending),
-                ))
+            .map(
+              (data) => Flexible(
+                fit: FlexFit.tight,
+                child: ChartBar(
+                    data['day'] as String,
+                    data['totalSum'] as double,
+                    totalSpending == 0
+                        ? 0
+                        : (data['totalSum'] as double) / totalSpending),
+              ),
+            )
             .toList()
             .reversed
             .toList(),

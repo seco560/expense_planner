@@ -2,7 +2,6 @@ import 'package:expense_planner/widgets/add_transaction_widget.dart';
 import 'package:expense_planner/widgets/transaction_chart.dart';
 import 'package:expense_planner/widgets/transaction_list_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'models/expense_transaction.dart';
@@ -20,24 +19,24 @@ class ExpensePlannerMainView extends StatefulWidget {
 
 class _ExpensePlannerMainViewState extends State<ExpensePlannerMainView> {
   final List<ExpenseTransaction> _userTransactions = [
-    // ExpenseTransaction(
-    //   id: 't0',
-    //   title: 'Eee PC',
-    //   price: 300,
-    //   timestamp: DateTime(2010, 07, 10),
-    // ),
-    // ExpenseTransaction(
-    //   id: 't1',
-    //   title: 'Pocophone',
-    //   price: 1200,
-    //   timestamp: DateTime(2018, 11, 11),
-    // ),
-    // ExpenseTransaction(
-    //   id: 't2',
-    //   title: 'PSVita',
-    //   price: 350.70,
-    //   timestamp: DateTime(2020, 11, 11),
-    // ),
+    ExpenseTransaction(
+      id: 't0',
+      title: 'Eee PC',
+      price: 300,
+      timestamp: DateTime(2010, 11, 28),
+    ),
+    ExpenseTransaction(
+      id: 't1',
+      title: 'Pocophone',
+      price: 1200,
+      timestamp: DateTime(2021, 11, 30),
+    ),
+    ExpenseTransaction(
+      id: 't2',
+      title: 'PSVita',
+      price: 350.70,
+      timestamp: DateTime(2021, 12, 6),
+    ),
   ];
 
   @override
